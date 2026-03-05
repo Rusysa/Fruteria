@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mariadb
+    container_name: mariadb_fruteria
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+      MARIADB_DATABASE: fruteria_veracruzana
+    volumes:
+      - ./database/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    container_name: adminer_fruteria
+    restart: always
+    ports:
+      - 8080:8080
+
+  backend:
+    build: ./backend
+    container_name: backend_fruteria
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: example
+      DB_NAME: fruteria_veracruzana
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
+volumes:
+  mariadb_data:

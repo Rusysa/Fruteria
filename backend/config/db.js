@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'db', // Nombre del servicio de la base de datos en Docker Compose
   user: 'root', // Usuario por defecto de MySQL en muchos entornos locales
   password: 'example', // Contraseña por defecto (vacía)
   database: 'fruteria_veracruzana'
