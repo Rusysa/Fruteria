@@ -1,4 +1,8 @@
-# 🍊 Frutería Veracruzana — Proyecto Completo
+# PROYECTO RECREATIVO
+Este proyecto no tiene ningun fin especifico y solo es una prueba de concepto, no represante un producto final funcional ni usable.
+
+
+##  Frutería Veracruzana 
 
 Proyecto web completo para una frutería con frontend, backend Node.js/Express, base de datos MySQL y panel de administrador.
 
