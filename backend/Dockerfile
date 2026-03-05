@@ -1,12 +1,12 @@
-# backend/Dockerfile
 FROM node:16
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY backend/package.json backend/pnpm-lock.yaml ./
 RUN npm install
 
-COPY . .
+COPY backend/. ./
+COPY frontend ./frontend
 
 EXPOSE 3000
 
