@@ -42,88 +42,107 @@ fruteria-veracruzana/
 
 ## ⚙️ Requisitos Previos
 
-- **Node.js** v16 o superior → [nodejs.org](https://nodejs.org)
-- **MySQL** v8 o superior → [mysql.com](https://mysql.com)
-- **npm** (incluido con Node.js)
+- **Docker** → [docs.docker.com](https://docs.docker.com/get-docker/)
+- **Docker Compose** → [docs.docker.com/compose](https://docs.docker.com/compose/install/)
 
 ---
 
 ## 🚀 Instrucciones de Instalación y Ejecución
 
-### Paso 1: Configurar la Base de Datos MySQL
+### Paso 1: Iniciar los Servicios con Docker Compose
 
-1. Abre tu cliente MySQL (MySQL Workbench, phpMyAdmin, o la terminal):
-
-```bash
-mysql -u root -p
-```
-
-2. Ejecuta el script SQL:
+Desde la raíz del proyecto, ejecuta:
 
 ```bash
-mysql -u root -p < database/database.sql
+docker-compose up -d
 ```
 
-O copia y pega el contenido de `database/database.sql` en tu cliente MySQL.
+Este comando iniciará automáticamente:
+- **MariaDB** (base de datos) en puerto `3306`
+- **Backend Node.js/Express** en puerto `3000`
+- **Adminer** (gestor web de BD) en puerto `8080`
 
-Esto creará:
-- La base de datos `fruteria_veracruzana`
-- La tabla `products` con 4 productos de ejemplo
-- La tabla `users` con el usuario administrador
+La base de datos se configurará automáticamente ejecutando el script `database/database.sql`.
 
-### Paso 2: Configurar la Conexión a la Base de Datos
-
-Abre el archivo `backend/config/db.js` y ajusta las credenciales según tu configuración local:
-
-```javascript
-const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',       // Tu usuario de MySQL
-  password: '',       // Tu contraseña de MySQL
-  database: 'fruteria_veracruzana'
-});
-```
-
-### Paso 3: Instalar Dependencias del Backend
+### Paso 2: Verificar que los Servicios Estén Corriendo
 
 ```bash
-cd backend
-npm install
+docker-compose ps
 ```
 
-### Paso 4: Iniciar el Servidor
+Deberías ver 3 contenedores en estado **Up**.
 
-```bash
-npm start
-```
-
-O en modo desarrollo (con recarga automática):
-
-```bash
-npm run dev
-```
-
-El servidor se iniciará en: **http://127.0.0.1:3000**
-
-### Paso 5: Abrir el Sitio Web
+### Paso 3: Abrir el Sitio Web
 
 Abre tu navegador y visita:
 
 | URL | Descripción |
 |-----|-------------|
-| `http://127.0.0.1:3000` | Sitio web principal |
-| `http://127.0.0.1:3000/admin` | Panel de administrador |
+| `http://localhost:3000` | Sitio web principal |
+| `http://localhost:3000/admin` | Panel de administrador |
+| `http://localhost:8080` | Adminer (gestor de BD) |
+
+### Detener los Servicios
+
+```bash
+docker-compose down
+```
+
+Para detener y eliminar volúmenes (datos de BD):
+
+```bash
+docker-compose down -v
+```
 
 ---
 
-## 🔐 Credenciales del Panel de Administrador
+## � Configuración de Docker
+
+### Servicios Incluidos
+
+El archivo `docker-compose.yml` define 3 servicios:
+
+1. **MariaDB** (`db`)
+   - Imagen: `mariadb`
+   - Puerto: `3306`
+   - Usuario root: `root`
+   - Contraseña: `example`
+   - Base de datos: `fruteria_veracruzana`
+   - Volumen: `mariadb_data` (persistencia de datos)
+
+2. **Backend Node.js** (`backend`)
+   - Build desde: `backend/Dockerfile`
+   - Puerto: `3000`
+   - Variables de entorno configuradas automáticamente
+   - Depende de: `db` (espera a que la BD esté lista)
+
+3. **Adminer** (gestor web de BD)
+   - Imagen: `adminer`
+   - Puerto: `8080`
+   - Permite gestionar la BD desde el navegador
+
+### Variables de Entorno
+
+Las variables están configuradas en `docker-compose.yml`:
+
+```yaml
+environment:
+  DB_HOST: db          # Nombre del servicio en Docker
+  DB_USER: root
+  DB_PASSWORD: example
+  DB_NAME: fruteria_veracruzana
+```
+
+---
+
+## �🔐 Credenciales del Panel de Administrador
 
 | Campo | Valor |
 |-------|-------|
 | Usuario | `admin` |
 | Contraseña | `admin123` |
 
-> **Nota:** En producción, cambia estas credenciales y la clave secreta JWT en `authController.js`.
+> **Nota:**  Para fines educativos se emplean credenciales genericas.
 
 ---
 
@@ -192,19 +211,51 @@ x-auth-token: <tu_token_jwt>
 
 ---
 
-## 📝 Notas Importantes
+## � Solución de Problemas
 
-1. El sitio incluye **modo demo**: si el servidor no está disponible, carga productos de ejemplo estáticos.
-2. Para producción, usa variables de entorno para las credenciales sensibles.
-3. El hash bcrypt en el SQL puede necesitar regenerarse. Para crear un nuevo hash:
+### Ver logs de los contenedores
 
-```javascript
-const bcrypt = require('bcryptjs');
-const hash = await bcrypt.hash('admin123', 10);
-console.log(hash);
+```bash
+# Logs de todos los servicios
+docker-compose logs
+
+# Logs de un servicio específico
+docker-compose logs backend
+docker-compose logs db
+
+# Seguir los logs en tiempo real
+docker-compose logs -f backend
 ```
 
-Luego actualiza el INSERT en `database.sql`.
+### Reiniciar un servicio
+
+```bash
+docker-compose restart backend
+docker-compose restart db
+```
+
+### Reconstruir la imagen del backend después de cambios
+
+```bash
+docker-compose up -d --build backend
+```
+
+### Acceder a la terminal del contenedor
+
+```bash
+docker-compose exec backend bash
+docker-compose exec db bash
+```
+
+---
+
+## �📝 Notas Importantes
+
+1. El sitio incluye **modo demo**: si el servidor no está disponible, carga productos de ejemplo estáticos.
+2. Con Docker, todos los servicios están aislados en contenedores. **No necesitas instalar MySQL o Node.js** en tu máquina.
+3. Los datos de la base de datos se persisten en el volumen `mariadb_data`. Si necesitas resetear la BD, ejecuta `docker-compose down -v`.
+4. La BD se inicializa automáticamente con el script `database/database.sql` cuando levanta `docker-compose up`.
+5. Para cambios en el código del backend, reinicia el contenedor con `docker-compose restart backend` o reconstruye con `docker-compose up -d --build backend`.
 
 ---
 
