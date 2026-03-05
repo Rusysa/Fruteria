@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frutería Veracruzana — Resumen del Proyecto</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #E67E22;
+            --primary-dark: #CA6F1E;
+            --secondary: #6E2C00;
+            --accent: #F39C12;
+            --light: #FEF9F0;
+            --dark: #2C1810;
+            --text: #4A2C0A;
+            --text-light: #8B5E3C;
+            --white: #FFFFFF;
+            --green: #10B981;
+            --blue: #3B82F6;
+            --purple: #8B5CF6;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --radius: 14px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F5F0EB;
+            color: var(--text);
+        }
+
+        /* HEADER */
+        .page-header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 50%, var(--primary) 100%);
+            color: white;
+            padding: 4rem 2rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #F5F0EB;
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.4rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .page-header h1 span { color: var(--accent); }
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* NAV TABS */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 2rem;
+            flex-wrap: wrap;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-tab {
+            padding: 0.6rem 1.4rem;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            background: var(--light);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .nav-tab:hover { border-color: var(--primary); color: var(--primary); }
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 12px rgba(230,126,34,0.35);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* CARDS */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .card-header {
+            padding: 1.2rem 1.8rem;
+            border-bottom: 1px solid #F0E6D9;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .card-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        .card-body { padding: 1.8rem; }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid transparent;
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .stat-card.orange { border-top-color: var(--primary); }
+        .stat-card.brown { border-top-color: var(--secondary); }
+        .stat-card.green { border-top-color: var(--green); }
+        .stat-card.blue { border-top-color: var(--blue); }
+        .stat-card.purple { border-top-color: var(--purple); }
+        .stat-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); font-weight: 500; }
+
+        /* CHARTS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .chart-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        canvas { max-height: 280px; }
+
+        /* FOLDER TREE */
+        .folder-tree {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            background: var(--dark);
+            color: #E8D5C4;
+            padding: 2rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+        }
+        .tree-folder { color: var(--accent); font-weight: 700; }
+        .tree-file { color: #A8D8A8; }
+        .tree-comment { color: #888; font-style: italic; }
+        .tree-special { color: #87CEEB; }
+
+        /* CODE BLOCKS */
+        .code-block {
+            background: var(--dark);
+            color: #E8D5C4;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            position: relative;
+        }
+        .code-block .keyword { color: #F39C12; }
+        .code-block .string { color: #A8D8A8; }
+        .code-block .comment { color: #888; font-style: italic; }
+        .code-block .variable { color: #87CEEB; }
+        .code-block .number { color: #FF9EAA; }
+        .copy-btn {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
+        /* STEPS */
+        .steps { display: flex; flex-direction: column; gap: 1.5rem; }
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        .step:hover { transform: translateX(5px); box-shadow: var(--shadow); }
+        .step-number {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .step-content h3 { font-size: 1rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.4rem; }
+        .step-content p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.6rem; }
+
+        /* TABLE */
+        .info-table { width: 100%; border-collapse: collapse; }
+        .info-table th {
+            background: var(--light);
+            padding: 0.9rem 1.2rem;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #F0E6D9;
+        }
+        .info-table td {
+            padding: 0.9rem 1.2rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #F5EDE4;
+            vertical-align: middle;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table tr:hover td { background: var(--light); }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-orange { background: rgba(230,126,34,0.15); color: var(--primary); }
+        .badge-green { background: rgba(16,185,129,0.12); color: #065F46; }
+        .badge-blue { background: rgba(59,130,246,0.12); color: #1D4ED8; }
+        .badge-purple { background: rgba(139,92,246,0.12); color: #5B21B6; }
+        .badge-red { background: rgba(239,68,68,0.12); color: #991B1B; }
+
+        /* FEATURE GRID */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .feature-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+        .feature-card h3 { font-size: 1rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem; }
+        .feature-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+
+        /* ENDPOINT CARDS */
+        .endpoints { display: flex; flex-direction: column; gap: 0.8rem; }
+        .endpoint {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--light);
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .endpoint:hover { background: #F0E6D9; }
+        .method {
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 60px;
+            text-align: center;
+        }
+        .method.get { background: rgba(16,185,129,0.15); color: #065F46; }
+        .method.post { background: rgba(59,130,246,0.15); color: #1D4ED8; }
+        .method.put { background: rgba(245,158,11,0.15); color: #92400E; }
+        .method.delete { background: rgba(239,68,68,0.15); color: #991B1B; }
+        .endpoint-path { color: var(--secondary); font-weight: 600; flex: 1; }
+        .endpoint-desc { color: var(--text-light); font-family: 'Segoe UI', sans-serif; font-size: 0.85rem; }
+        .endpoint-auth { font-size: 0.75rem; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .container { padding: 1rem; }
+        }
+
+        /* PROGRESS BARS */
+        .progress-item { margin-bottom: 1.2rem; }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .progress-bar {
+            height: 10px;
+            background: #F0E6D9;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 1.5s ease;
+            width: 0;
+        }
+
+        /* FOOTER */
+        .page-footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.85rem;
+            margin-top: 3rem;
+        }
+        .page-footer strong { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div class="header-badge">📋 Documentación del Proyecto</div>
+        <h1>🍊 Frutería <span>Veracruzana</span></h1>
+        <p>Resumen interactivo del proyecto web completo — Frontend, Backend Node.js/Express y Base de Datos MySQL</p>
+    </div>
+
+    <!-- NAV TABS -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('overview')">📊 Resumen</button>
+        <button class="nav-tab" onclick="showTab('structure')">📁 Estructura</button>
+        <button class="nav-tab" onclick="showTab('backend')">⚙️ Backend</button>
+        <button class="nav-tab" onclick="showTab('frontend')">🎨 Frontend</button>
+        <button class="nav-tab" onclick="showTab('database')">🗄️ Base de Datos</button>
+        <button class="nav-tab" onclick="showTab('guide')">🚀 Guía de Inicio</button>
+    </div>
+
+    <div class="container">
+
+        <!-- ========================
+             TAB: RESUMEN
+        ======================== -->
+        <div class="section active" id="tab-overview">
+            <div class="stats-grid">
+                <div class="stat-card orange">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Archivos Creados</div>
+                </div>
+                <div class="stat-card brown">
+                    <div class="stat-icon">🗄️</div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Tablas MySQL</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Endpoints API REST</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon">🍉</div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Productos en BD</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon">🔐</div>
+                    <div class="stat-value">JWT</div>
+                    <div class="stat-label">Autenticación Segura</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">🍉 Distribución de Productos por Categoría</div>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">💰 Precios por Kilogramo (MXN)</div>
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🏗️</span>
+                    <h2>Stack Tecnológico</h2>
+                </div>
+                <div class="card-body">
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>Capa</th>
+                                <th>Tecnología</th>
+                                <th>Versión</th>
+                                <th>Propósito</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Frontend</strong></td>
+                                <td>HTML5 + CSS3 + JavaScript</td>
+                                <td><span class="badge badge-orange">Vanilla</span></td>
+                                <td>Interfaz de usuario responsive</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Backend</strong></td>
+                                <td>Node.js + Express.js</td>
+                                <td><span class="badge badge-green">v4.18+</span></td>
+                                <td>Servidor y API REST</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Base de Datos</strong></td>
+                                <td>MySQL</td>
+                                <td><span class="badge badge-blue">v8+</span></td>
+                                <td>Almacenamiento de productos y usuarios</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Autenticación</strong></td>
+                                <td>JWT + bcryptjs</td>
+                                <td><span class="badge badge-purple">Seguro</span></td>
+                                <td>Tokens de sesión y hash de contraseñas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Conexión</strong></td>
+                                <td>mysql (npm package)</td>
+                                <td><span class="badge badge-orange">127.0.0.1</span></td>
+                                <td>Conexión a base de datos local</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>✨</span>
+                    <h2>Características del Proyecto</h2>
+                </div>
+                <div class="card-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎨</div>
+                            <h3>Diseño Moderno y Responsive</h3>
+                            <p>Diseño con colores cálidos (naranjas y cafés), completamente adaptable a móviles, tablets y escritorio.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛒</div>
+                            <h3>Catálogo Dinámico</h3>
+                            <p>Los productos se cargan dinámicamente desde la API conectada a MySQL. Incluye modo demo sin servidor.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔐</div>
+                            <h3>Panel de Administrador</h3>
+                            <p>Panel completo con login seguro, dashboard de estadísticas y CRUD completo de productos.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔑</div>
+                            <h3>Autenticación JWT</h3>
+                            <p>Sistema de tokens JWT para proteger las rutas del panel de administración con expiración automática.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🌐</div>
+                            <h3>API REST Completa</h3>
+                            <p>5 endpoints para gestión de productos (GET, POST, PUT, DELETE) y autenticación de usuarios.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📱</div>
+                            <h3>Menú Hamburguesa</h3>
+                            <p>Navegación adaptativa con menú hamburguesa en dispositivos móviles para una experiencia óptima.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRESS BARS -->
+            <div class="card">
+                <div class="card-header">
+                    <span>📈</span>
+                    <h2>Cobertura del Proyecto</h2>
+                </div>
+                <div class="card-body">
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Frontend (HTML/CSS/JS)</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Backend (Node.js/Express)</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Base de Datos (MySQL)</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Panel de Administrador</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Autenticación JWT</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>Diseño Responsive</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             TAB: ESTRUCTURA
+        ======================== -->
+        <div class="section" id="tab-structure">
+            <div class="card">
+                <div class="card-header">
+                    <span>📁</span>
+                    <h2>Estructura Completa de Carpetas</h2>
+                </div>
+                <div class="card-body">
+                    <div class="folder-tree">
+<span class="tree-folder">fruteria-veracruzana/</span>                    <span class="tree-comment">← Raíz del proyecto</span>
+├── <span class="tree-folder">backend/</span>                              <span class="tree-comment">← Servidor Node.js</span>
+│   ├── <span class="tree-folder">config/</span>
+│   │   └── <span class="tree-file">db.js</span>                         <span class="tree-comment">← Conexión MySQL (127.0.0.1)</span>
+│   ├── <span class="tree-folder">controllers/</span>
+│   │   ├── <span class="tree-file">authController.js</span>             <span class="tree-comment">← Login + JWT</span>
+│   │   └── <span class="tree-file">productController.js</span>          <span class="tree-comment">← CRUD productos</span>
+│   ├── <span class="tree-folder">middleware/</span>
+│   │   └── <span class="tree-file">authMiddleware.js</span>             <span class="tree-comment">← Verificación JWT</span>
+│   ├── <span class="tree-folder">models/</span>                          <span class="tree-comment">← Reservado para modelos</span>
+│   ├── <span class="tree-folder">routes/</span>
+│   │   ├── <span class="tree-file">auth.js</span>                       <span class="tree-comment">← POST /api/auth/login</span>
+│   │   └── <span class="tree-file">products.js</span>                   <span class="tree-comment">← GET/POST/PUT/DELETE /api/products</span>
+│   ├── <span class="tree-special">package.json</span>                      <span class="tree-comment">← Dependencias npm</span>
+│   └── <span class="tree-special">server.js</span>                         <span class="tree-comment">← Servidor Express principal</span>
+│
+├── <span class="tree-folder">database/</span>
+│   └── <span class="tree-special">database.sql</span>                      <span class="tree-comment">← Script SQL completo</span>
+│
+├── <span class="tree-folder">frontend/</span>                             <span class="tree-comment">← Sitio web público</span>
+│   ├── <span class="tree-folder">admin/</span>
+│   │   ├── <span class="tree-file">admin.css</span>                     <span class="tree-comment">← Estilos del panel</span>
+│   │   ├── <span class="tree-file">admin.js</span>                      <span class="tree-comment">← Lógica del panel</span>
+│   │   └── <span class="tree-file">index.html</span>                    <span class="tree-comment">← Panel de administrador</span>
+│   ├── <span class="tree-folder">css/</span>
+│   │   └── <span class="tree-file">style.css</span>                     <span class="tree-comment">← Estilos del sitio principal</span>
+│   ├── <span class="tree-folder">images/</span>
+│   │   ├── <span class="tree-file">hero-bg.jpg</span>                   <span class="tree-comment">← Imagen del hero</span>
+│   │   ├── <span class="tree-file">mango.jpg</span>
+│   │   ├── <span class="tree-file">papaya.jpg</span>
+│   │   ├── <span class="tree-file">guayaba.jpg</span>
+│   │   └── <span class="tree-file">frutas-mexico.jpg</span>
+│   ├── <span class="tree-folder">js/</span>
+│   │   └── <span class="tree-file">main.js</span>                       <span class="tree-comment">← JavaScript del sitio</span>
+│   └── <span class="tree-file">index.html</span>                        <span class="tree-comment">← Página principal</span>
+│
+├── <span class="tree-special">project-overview.html</span>                 <span class="tree-comment">← Esta página</span>
+└── <span class="tree-special">README.md</span>                             <span class="tree-comment">← Documentación completa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>📊</span>
+                    <h2>Resumen de Archivos por Tipo</h2>
+                </div>
+                <div class="card-body">
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <div class="chart-title">📄 Archivos por Tipo</div>
+                            <canvas id="filesChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-title">📦 Dependencias npm</div>
+                            <canvas id="depsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             TAB: BACKEND
+        ======================== -->
+        <div class="section" id="tab-backend">
+            <div class="card">
+                <div class="card-header">
+                    <span>🌐</span>
+                    <h2>Endpoints de la API REST</h2>
+                </div>
+                <div class="card-body">
+                    <div class="endpoints">
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-path">/api/auth/login</span>
+                            <span class="endpoint-desc">Iniciar sesión — Devuelve token JWT</span>
+                            <span class="badge badge-green">Público</span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method get">GET</span>
+                            <span class="endpoint-path">/api/products</span>
+                            <span class="endpoint-desc">Obtener todos los productos</span>
+                            <span class="badge badge-green">Público</span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method get">GET</span>
+                            <span class="endpoint-path">/api/products/:id</span>
+                            <span class="endpoint-desc">Obtener un producto por ID</span>
+                            <span class="badge badge-green">Público</span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-path">/api/products</span>
+                            <span class="endpoint-desc">Crear nuevo producto</span>
+                            <span class="badge badge-red">🔐 JWT</span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method put">PUT</span>
+                            <span class="endpoint-path">/api/products/:id</span>
+                            <span class="endpoint-desc">Actualizar producto existente</span>
+                            <span class="badge badge-red">🔐 JWT</span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method delete">DELETE</span>
+                            <span class="endpoint-path">/api/products/:id</span>
+                            <span class="endpoint-desc">Eliminar un producto</span>
+                            <span class="badge badge-red">🔐 JWT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>⚙️</span>
+                    <h2>Configuración del Servidor (server.js)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="code-block" id="serverCode">
+                        <button class="copy-btn" onclick="copyCode('serverCode')">📋 Copiar</button>
+<span class="keyword">const</span> <span class="variable">express</span> = <span class="keyword">require</span>(<span class="string">'express'</span>);
+<span class="keyword">const</span> <span class="variable">cors</span> = <span class="keyword">require</span>(<span class="string">'cors'</span>);
+<span class="keyword">const</span> <span class="variable">path</span> = <span class="keyword">require</span>(<span class="string">'path'</span>);
+
+<span class="keyword">const</span> <span class="variable">app</span> = <span class="variable">express</span>();
+<span class="keyword">const</span> <span class="variable">PORT</span> = <span class="number">3000</span>;
+
+<span class="comment">// Middleware</span>
+<span class="variable">app</span>.use(<span class="variable">cors</span>());
+<span class="variable">app</span>.use(<span class="variable">express</span>.json());
+
+<span class="comment">// Archivos estáticos del frontend</span>
+<span class="variable">app</span>.use(<span class="variable">express</span>.static(<span class="variable">path</span>.join(__dirname, <span class="string">'../frontend'</span>)));
+
+<span class="comment">// Rutas de la API</span>
+<span class="variable">app</span>.use(<span class="string">'/api/products'</span>, productRoutes);
+<span class="variable">app</span>.use(<span class="string">'/api/auth'</span>, authRoutes);
+
+<span class="comment">// Iniciar servidor en 127.0.0.1</span>
+<span class="variable">app</span>.listen(<span class="variable">PORT</span>, <span class="string">'127.0.0.1'</span>, () => {
+    console.log(<span class="string">`Servidor en http://127.0.0.1:${PORT}`</span>);
+});
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🔗</span>
+                    <h2>Configuración de la Base de Datos (config/db.js)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="code-block" id="dbCode">
+                        <button class="copy-btn" onclick="copyCode('dbCode')">📋 Copiar</button>
+<span class="keyword">const</span> <span class="variable">mysql</span> = <span class="keyword">require</span>(<span class="string">'mysql'</span>);
+
+<span class="keyword">const</span> <span class="variable">connection</span> = <span class="variable">mysql</span>.createConnection({
+  host: <span class="string">'127.0.0.1'</span>,
+  user: <span class="string">'root'</span>,         <span class="comment">// Tu usuario MySQL</span>
+  password: <span class="string">''</span>,         <span class="comment">// Tu contraseña MySQL</span>
+  database: <span class="string">'fruteria_veracruzana'</span>
+});
+
+<span class="variable">connection</span>.connect(<span class="variable">error</span> => {
+  <span class="keyword">if</span> (<span class="variable">error</span>) <span class="keyword">throw</span> <span class="variable">error</span>;
+  console.log(<span class="string">'Conexión a MySQL establecida.'</span>);
+});
+
+module.exports = <span class="variable">connection</span>;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             TAB: FRONTEND
+        ======================== -->
+        <div class="section" id="tab-frontend">
+            <div class="card">
+                <div class="card-header">
+                    <span>🎨</span>
+                    <h2>Secciones del Sitio Web Principal</h2>
+                </div>
+                <div class="card-body">
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>Sección</th>
+                                <th>ID HTML</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🔝 Navbar</td>
+                                <td><code>#navbar</code></td>
+                                <td>Logo, menú de navegación, botón Admin con modal de login</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>🦸 Hero Section</td>
+                                <td><code>#inicio</code></td>
+                                <td>Imagen de fondo, título, botón "Comprar Ahora", estadísticas</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>🍉 Productos</td>
+                                <td><code>#productos</code></td>
+                                <td>Tarjetas dinámicas cargadas desde la API con imagen, nombre, descripción y precio</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>🗂️ Categorías</td>
+                                <td><code>#categorias</code></td>
+                                <td>6 categorías con iconos: Tropicales, Cítricos, Berries, Uvas, Plátanos, Importadas</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>🌱 Sobre Nosotros</td>
+                                <td><code>#nosotros</code></td>
+                                <td>Historia, valores, características de la empresa con imagen</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>📍 Contacto</td>
+                                <td><code>#contacto</code></td>
+                                <td>Ubicación, teléfono, email, horario y formulario de contacto</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td>🔻 Footer</td>
+                                <td><code>footer</code></td>
+                                <td>Redes sociales, enlaces de navegación, información de contacto</td>
+                                <td><span class="badge badge-green">✅ Completo</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🎨</span>
+                    <h2>Paleta de Colores</h2>
+                </div>
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+                        <div style="text-align:center;">
+                            <div style="height:80px; background:#E67E22; border-radius:12px; margin-bottom:0.5rem; box-shadow:0 4px 12px rgba(230,126,34,0.4);"></div>
+                            <strong style="font-size:0.85rem;">Primary</strong><br>
+                            <code style="font-size:0.75rem; color:var(--text-light);">#E67E22</code>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="height:80px; background:#6E2C00; border-radius:12px; margin-bottom:0.5rem; box-shadow:0 4px 12px rgba(110,44,0,0.4);"></div>
+                            <strong style="font-size:0.85rem;">Secondary</strong><br>
+                            <code style="font-size:0.75rem; color:var(--text-light);">#6E2C00</code>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="height:80px; background:#F39C12; border-radius:12px; margin-bottom:0.5rem; box-shadow:0 4px 12px rgba(243,156,18,0.4);"></div>
+                            <strong style="font-size:0.85rem;">Accent</strong><br>
+                            <code style="font-size:0.75rem; color:var(--text-light);">#F39C12</code>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="height:80px; background:#2C1810; border-radius:12px; margin-bottom:0.5rem;"></div>
+                            <strong style="font-size:0.85rem;">Dark</strong><br>
+                            <code style="font-size:0.75rem; color:var(--text-light);">#2C1810</code>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="height:80px; background:#FEF9F0; border-radius:12px; margin-bottom:0.5rem; border:1px solid #F0E6D9;"></div>
+                            <strong style="font-size:0.85rem;">Light</strong><br>
+                            <code style="font-size:0.75rem; color:var(--text-light);">#FEF9F0</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🔐</span>
+                    <h2>Panel de Administrador</h2>
+                </div>
+                <div class="card-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🔑</div>
+                            <h3>Login Seguro</h3>
+                            <p>Autenticación con usuario y contraseña. Verificación contra MySQL con bcrypt. Genera token JWT.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Dashboard</h3>
+                            <p>Estadísticas generales: total de productos, categorías, estado del servidor y tabla de productos recientes.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">✏️</div>
+                            <h3>CRUD de Productos</h3>
+                            <p>Crear, editar y eliminar productos con modal interactivo. Cambios reflejados en tiempo real.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🗂️</div>
+                            <h3>Gestión de Categorías</h3>
+                            <p>Vista de todas las categorías disponibles con iconos y descripción de productos incluidos.</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:1.5rem; padding:1rem; background:var(--light); border-radius:10px; border-left:4px solid var(--primary);">
+                        <strong>🔐 Credenciales de acceso:</strong>
+                        <br>Usuario: <code>admin</code> &nbsp;|&nbsp; Contraseña: <code>admin123</code>
+                        <br><small style="color:var(--text-light);">URL: http://127.0.0.1:3000/admin</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             TAB: BASE DE DATOS
+        ======================== -->
+        <div class="section" id="tab-database">
+            <div class="card">
+                <div class="card-header">
+                    <span>🗄️</span>
+                    <h2>Esquema de la Base de Datos</h2>
+                </div>
+                <div class="card-body">
+                    <div class="charts-grid">
+                        <div>
+                            <h3 style="color:var(--secondary); margin-bottom:1rem;">📋 Tabla: <code>products</code></h3>
+                            <table class="info-table">
+                                <thead>
+                                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><code>id</code></td><td><span class="badge badge-blue">INT PK</span></td><td>Identificador único</td></tr>
+                                    <tr><td><code>name</code></td><td>VARCHAR(255)</td><td>Nombre del producto</td></tr>
+                                    <tr><td><code>description</code></td><td>TEXT</td><td>Descripción detallada</td></tr>
+                                    <tr><td><code>price_per_kg</code></td><td>DECIMAL(10,2)</td><td>Precio por kilogramo</td></tr>
+                                    <tr><td><code>image_url</code></td><td>VARCHAR(255)</td><td>Ruta de la imagen</td></tr>
+                                    <tr><td><code>category</code></td><td>VARCHAR(100)</td><td>Categoría del producto</td></tr>
+                                    <tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>Fecha de creación</td></tr>
+                                    <tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td>Última actualización</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 style="color:var(--secondary); margin-bottom:1rem;">👤 Tabla: <code>users</code></h3>
+                            <table class="info-table">
+                                <thead>
+                                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><code>id</code></td><td><span class="badge badge-blue">INT PK</span></td><td>Identificador único</td></tr>
+                                    <tr><td><code>username</code></td><td>VARCHAR(255)</td><td>Nombre de usuario (único)</td></tr>
+                                    <tr><td><code>password</code></td><td>VARCHAR(255)</td><td>Hash bcrypt de la contraseña</td></tr>
+                                    <tr><td><code>role</code></td><td>ENUM</td><td>Rol: admin o editor</td></tr>
+                                    <tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>Fecha de registro</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>📝</span>
+                    <h2>Script SQL (database.sql)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="code-block" id="sqlCode">
+                        <button class="copy-btn" onclick="copyCode('sqlCode')">📋 Copiar</button>
+<span class="comment">-- Crear la base de datos</span>
+<span class="keyword">CREATE DATABASE IF NOT EXISTS</span> <span class="variable">fruteria_veracruzana</span>
+    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+<span class="keyword">USE</span> <span class="variable">fruteria_veracruzana</span>;
+
+<span class="comment">-- Tabla de productos</span>
+<span class="keyword">CREATE TABLE IF NOT EXISTS</span> <span class="variable">products</span> (
+  <span class="variable">id</span>           INT AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,
+  <span class="variable">name</span>         VARCHAR(<span class="number">255</span>) NOT NULL,
+  <span class="variable">description</span>  TEXT NOT NULL,
+  <span class="variable">price_per_kg</span> DECIMAL(<span class="number">10</span>, <span class="number">2</span>) NOT NULL,
+  <span class="variable">image_url</span>    VARCHAR(<span class="number">255</span>) NOT NULL,
+  <span class="variable">category</span>     VARCHAR(<span class="number">100</span>) NOT NULL,
+  <span class="variable">created_at</span>   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+<span class="comment">-- Tabla de usuarios</span>
+<span class="keyword">CREATE TABLE IF NOT EXISTS</span> <span class="variable">users</span> (
+  <span class="variable">id</span>       INT AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,
+  <span class="variable">username</span> VARCHAR(<span class="number">255</span>) NOT NULL UNIQUE,
+  <span class="variable">password</span> VARCHAR(<span class="number">255</span>) NOT NULL  <span class="comment">-- Hash bcrypt</span>
+) ENGINE=InnoDB;
+
+<span class="comment">-- Insertar productos de ejemplo</span>
+<span class="keyword">INSERT INTO</span> <span class="variable">products</span> VALUES
+(<span class="keyword">NULL</span>, <span class="string">'Mango Ataulfo'</span>, <span class="string">'Dulce y jugoso...'</span>, <span class="number">35.50</span>, <span class="string">'images/mango.jpg'</span>, <span class="string">'Frutas Tropicales'</span>, <span class="keyword">NOW</span>()),
+(<span class="keyword">NULL</span>, <span class="string">'Papaya Maradol'</span>, <span class="string">'Grande y dulce...'</span>, <span class="number">25.00</span>, <span class="string">'images/papaya.jpg'</span>, <span class="string">'Frutas Tropicales'</span>, <span class="keyword">NOW</span>());
+
+<span class="comment">-- Usuario admin (contraseña: admin123)</span>
+<span class="keyword">INSERT INTO</span> <span class="variable">users</span> VALUES
+(<span class="keyword">NULL</span>, <span class="string">'admin'</span>, <span class="string">'$2a$10$N9qo8uLOickgx2ZMRZoMye...'</span>);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             TAB: GUÍA DE INICIO
+        ======================== -->
+        <div class="section" id="tab-guide">
+            <div class="card">
+                <div class="card-header">
+                    <span>🚀</span>
+                    <h2>Guía de Instalación Paso a Paso</h2>
+                </div>
+                <div class="card-body">
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Verificar Requisitos</h3>
+                                <p>Asegúrate de tener instalados Node.js v16+ y MySQL v8+.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+node --version   <span class="comment"># Debe mostrar v16.x.x o superior</span>
+mysql --version  <span class="comment"># Debe mostrar 8.x.x o superior</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Crear la Base de Datos MySQL</h3>
+                                <p>Ejecuta el script SQL para crear la base de datos y los datos iniciales.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+<span class="comment"># Opción 1: Desde la terminal</span>
+mysql -u root -p &lt; database/database.sql
+
+<span class="comment"># Opción 2: Desde MySQL Workbench</span>
+<span class="comment"># Abre database/database.sql y ejecuta el script</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Configurar Credenciales de MySQL</h3>
+                                <p>Edita el archivo <code>backend/config/db.js</code> con tus credenciales locales.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+<span class="comment">// backend/config/db.js</span>
+<span class="keyword">const</span> connection = mysql.createConnection({
+  host: <span class="string">'127.0.0.1'</span>,
+  user: <span class="string">'root'</span>,       <span class="comment">// ← Tu usuario</span>
+  password: <span class="string">''</span>,     <span class="comment">// ← Tu contraseña</span>
+  database: <span class="string">'fruteria_veracruzana'</span>
+});
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Instalar Dependencias npm</h3>
+                                <p>Instala todos los paquetes necesarios del backend.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+cd backend
+npm install
+<span class="comment"># Instala: express, cors, mysql, bcryptjs, jsonwebtoken</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h3>Iniciar el Servidor</h3>
+                                <p>Lanza el servidor Express en el puerto 3000.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+<span class="comment"># Modo producción</span>
+npm start
+
+<span class="comment"># Modo desarrollo (recarga automática)</span>
+npm run dev
+
+<span class="comment"># Salida esperada:</span>
+<span class="string">Servidor corriendo en http://127.0.0.1:3000</span>
+<span class="string">Conexión a la base de datos establecida.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <h3>Abrir en el Navegador</h3>
+                                <p>Visita las siguientes URLs en tu navegador.</p>
+                                <div class="code-block" style="font-size:0.82rem; padding:1rem;">
+<span class="comment"># Sitio web principal</span>
+http://127.0.0.1:3000
+
+<span class="comment"># Panel de administrador</span>
+http://127.0.0.1:3000/admin
+
+<span class="comment"># API de productos (JSON)</span>
+http://127.0.0.1:3000/api/products
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>📦</span>
+                    <h2>Dependencias npm (package.json)</h2>
+                </div>
+                <div class="card-body">
+                    <table class="info-table">
+                        <thead>
+                            <tr><th>Paquete</th><th>Versión</th><th>Propósito</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>express</strong></td>
+                                <td><span class="badge badge-green">^4.18.2</span></td>
+                                <td>Framework web para Node.js — servidor y rutas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>cors</strong></td>
+                                <td><span class="badge badge-blue">^2.8.5</span></td>
+                                <td>Habilitar peticiones desde diferentes orígenes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>mysql</strong></td>
+                                <td><span class="badge badge-orange">^2.18.1</span></td>
+                                <td>Conexión y consultas a la base de datos MySQL</td>
+                            </tr>
+                            <tr>
+                                <td><strong>bcryptjs</strong></td>
+                                <td><span class="badge badge-purple">^2.4.3</span></td>
+                                <td>Hash seguro de contraseñas con salt</td>
+                            </tr>
+                            <tr>
+                                <td><strong>jsonwebtoken</strong></td>
+                                <td><span class="badge badge-red">^8.5.1</span></td>
+                                <td>Generación y verificación de tokens JWT</td>
+                            </tr>
+                            <tr>
+                                <td><strong>nodemon</strong> (dev)</td>
+                                <td><span class="badge badge-blue">^2.0.20</span></td>
+                                <td>Recarga automática del servidor en desarrollo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="page-footer">
+        <p>🍊 <strong>Frutería Veracruzana</strong> — Proyecto Web Completo</p>
+        <p style="margin-top:0.5rem;">Stack: Node.js + Express + MySQL + HTML/CSS/JS Vanilla | Xalapa, Veracruz, México</p>
+    </div>
+
+    <script>
+        // ========================
+        // TABS
+        // ========================
+        function showTab(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${name}`).classList.add('active');
+            event.target.classList.add('active');
+
+            if (name === 'overview') initOverviewCharts();
+            if (name === 'structure') initStructureCharts();
+        }
+
+        // ========================
+        // CHARTS
+        // ========================
+        let chartsInitialized = {};
+
+        function initOverviewCharts() {
+            if (chartsInitialized.overview) return;
+            chartsInitialized.overview = true;
+
+            // Category Chart (Donut)
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Frutas Tropicales', 'Cítricos', 'Plátanos', 'Uvas y Melones', 'Berries'],
+                    datasets: [{
+                        data: [4, 1, 1, 1, 1],
+                        backgroundColor: ['#E67E22', '#F39C12', '#CA6F1E', '#6E2C00', '#D4A017'],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 15, font: { size: 11 } } }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Price Chart (Bar)
+            new Chart(document.getElementById('priceChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Mango', 'Papaya', 'Guayaba', 'Piña', 'Naranja', 'Plátano', 'Sandía', 'Fresa'],
+                    datasets: [{
+                        label: 'Precio por kg ($MXN)',
+                        data: [35.50, 25.00, 28.75, 22.00, 18.00, 15.50, 12.00, 85.00],
+                        backgroundColor: [
+                            'rgba(230,126,34,0.8)', 'rgba(243,156,18,0.8)', 'rgba(110,44,0,0.8)',
+                            'rgba(202,111,30,0.8)', 'rgba(230,126,34,0.6)', 'rgba(243,156,18,0.6)',
+                            'rgba(110,44,0,0.6)', 'rgba(239,68,68,0.8)'
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: v => '$' + v },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    bar.style.width = bar.dataset.width + '%';
+                });
+            }, 300);
+        }
+
+        function initStructureCharts() {
+            if (chartsInitialized.structure) return;
+            chartsInitialized.structure = true;
+
+            // Files by type
+            new Chart(document.getElementById('filesChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['HTML', 'CSS', 'JavaScript', 'SQL', 'JSON/MD'],
+                    datasets: [{
+                        data: [3, 2, 3, 1, 2],
+                        backgroundColor: ['#E67E22', '#F39C12', '#6E2C00', '#3B82F6', '#10B981'],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom', labels: { padding: 12, font: { size: 11 } } } }
+                }
+            });
+
+            // Dependencies
+            new Chart(document.getElementById('depsChart'), {
+                type: 'polarArea',
+                data: {
+                    labels: ['express', 'cors', 'mysql', 'bcryptjs', 'jsonwebtoken', 'nodemon'],
+                    datasets: [{
+                        data: [5, 3, 4, 4, 4, 3],
+                        backgroundColor: [
+                            'rgba(230,126,34,0.7)', 'rgba(243,156,18,0.7)', 'rgba(110,44,0,0.7)',
+                            'rgba(139,92,246,0.7)', 'rgba(239,68,68,0.7)', 'rgba(59,130,246,0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom', labels: { padding: 10, font: { size: 10 } } } }
+                }
+            });
+        }
+
+        // ========================
+        // COPY CODE
+        // ========================
+        function copyCode(id) {
+            const el = document.getElementById(id);
+            const text = el.innerText.replace('📋 Copiar\n', '');
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = el.querySelector('.copy-btn');
+                btn.textContent = '✅ Copiado';
+                setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+            });
+        }
+
+        // ========================
+        // INIT
+        // ========================
+        document.addEventListener('DOMContentLoaded', () => {
+            initOverviewCharts();
+        });
+    </script>
+</body>
+</html>

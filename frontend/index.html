@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frutería Veracruzana – Frescura del Trópico</title>
+    <meta name="description" content="Las mejores frutas tropicales de Veracruz, frescas y directas del campo a tu mesa.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍊</text></svg>">
+</head>
+<body>
+
+    <!-- ===========================
+         NAVBAR
+    =========================== -->
+    <nav class="navbar" id="navbar">
+        <a href="#inicio" class="navbar-brand">
+            <div class="navbar-logo">🍊</div>
+            <div class="navbar-title">
+                Frutería Veracruzana
+                <span>Frescura del Trópico</span>
+            </div>
+        </a>
+
+        <ul class="navbar-menu" id="navMenu">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#categorias">Categorías</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#" class="btn-login" id="loginBtn">🔐 Admin</a></li>
+        </ul>
+
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- ===========================
+         HERO SECTION
+    =========================== -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="hero-badge">🌿 Directo del campo a tu mesa</div>
+            <h1>
+                Las Mejores Frutas<br>
+                <span>Tropicales de Veracruz</span>
+            </h1>
+            <p>Frescura, sabor y nutrición en cada fruta. Seleccionadas con amor desde las huertas veracruzanas hasta tu hogar.</p>
+            <div class="hero-buttons">
+                <a href="#productos" class="btn-primary">🛒 Comprar Ahora</a>
+                <a href="#nosotros" class="btn-secondary">Conoce Nuestra Historia</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <strong>+50</strong>
+                    <span>Variedades</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>15+</strong>
+                    <span>Años de experiencia</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>100%</strong>
+                    <span>Productos frescos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         PRODUCTOS DESTACADOS
+    =========================== -->
+    <section id="productos">
+        <div class="section-header">
+            <div class="section-badge">🍉 Nuestros Productos</div>
+            <h2>Frutas Frescas Destacadas</h2>
+            <p>Seleccionamos las mejores frutas de temporada para ofrecerte siempre la máxima calidad y frescura.</p>
+            <div class="divider"></div>
+        </div>
+        <div class="products-grid" id="productsContainer">
+            <div class="loading-spinner">Cargando productos frescos...</div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         CATEGORÍAS
+    =========================== -->
+    <section id="categorias">
+        <div class="section-header">
+            <div class="section-badge">🗂️ Explora</div>
+            <h2>Nuestras Categorías</h2>
+            <p>Encuentra exactamente lo que buscas entre nuestra amplia variedad de frutas frescas.</p>
+            <div class="divider"></div>
+        </div>
+        <div class="categories-grid">
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🥭</span>
+                <h3>Frutas Tropicales</h3>
+                <p>Mango, papaya, guayaba y más</p>
+            </a>
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🍊</span>
+                <h3>Cítricos</h3>
+                <p>Naranja, limón, mandarina</p>
+            </a>
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🍓</span>
+                <h3>Berries</h3>
+                <p>Fresa, mora, frambuesa</p>
+            </a>
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🍇</span>
+                <h3>Uvas y Melones</h3>
+                <p>Uva, sandía, melón</p>
+            </a>
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🍌</span>
+                <h3>Plátanos</h3>
+                <p>Plátano tabasco, dominico</p>
+            </a>
+            <a href="#productos" class="category-card">
+                <span class="category-icon">🍎</span>
+                <h3>Frutas Importadas</h3>
+                <p>Manzana, pera, durazno</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===========================
+         SOBRE NOSOTROS
+    =========================== -->
+    <section id="nosotros">
+        <div class="about-container">
+            <div class="about-image">
+                <img src="images/frutas-mexico.jpg" alt="Mercado de frutas en Veracruz">
+                <div class="about-image-badge">
+                    <strong>15+</strong>
+                    <span>Años de tradición</span>
+                </div>
+            </div>
+            <div class="about-content">
+                <div class="section-badge">🌱 Nuestra Historia</div>
+                <h2>Tradición Veracruzana en Cada Fruta</h2>
+                <p>Somos una frutería familiar con más de 15 años de experiencia, dedicados a llevar la frescura y el sabor del trópico veracruzano directamente a tu mesa.</p>
+                <p>Trabajamos de la mano con productores locales para garantizar que cada fruta que adquieres sea cosechada en su punto óptimo de madurez, conservando todos sus nutrientes y su sabor inigualable.</p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <div class="about-feature-icon">🌿</div>
+                        <div class="about-feature-text">
+                            <h4>100% Natural</h4>
+                            <p>Sin conservadores ni aditivos artificiales</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">🚚</div>
+                        <div class="about-feature-text">
+                            <h4>Entrega Rápida</h4>
+                            <p>Frescura garantizada en tu puerta</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">🤝</div>
+                        <div class="about-feature-text">
+                            <h4>Productores Locales</h4>
+                            <p>Apoyamos a las familias veracruzanas</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">⭐</div>
+                        <div class="about-feature-text">
+                            <h4>Calidad Premium</h4>
+                            <p>Selección rigurosa de cada fruta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         CONTACTO
+    =========================== -->
+    <section id="contacto">
+        <div class="section-header">
+            <div class="section-badge">📍 Encuéntranos</div>
+            <h2>Contáctanos</h2>
+            <p>Estamos aquí para atenderte. Visítanos, llámanos o escríbenos.</p>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-item-text">
+                        <h4>Ubicación</h4>
+                        <p>Av. Independencia 245, Col. Centro<br>Xalapa, Veracruz, México</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-item-text">
+                        <h4>Teléfono</h4>
+                        <a href="tel:+522281234567">+52 (228) 123-4567</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-item-text">
+                        <h4>Correo Electrónico</h4>
+                        <a href="mailto:contacto@fruteriaVzla.mx">contacto@fruteriaVzla.mx</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div class="contact-item-text">
+                        <h4>Horario de Atención</h4>
+                        <p>Lun – Sáb: 7:00 AM – 8:00 PM<br>Domingo: 8:00 AM – 3:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3>Envíanos un Mensaje</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Nombre completo</label>
+                        <input type="text" id="contactName" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Correo electrónico</label>
+                        <input type="email" id="contactEmail" placeholder="tu@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Teléfono (opcional)</label>
+                        <input type="tel" id="contactPhone" placeholder="+52 (228) 000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Mensaje</label>
+                        <textarea id="contactMessage" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+                        📩 Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         FOOTER
+    =========================== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>🍊 Frutería Veracruzana</h3>
+                <p>Llevamos la frescura y el sabor del trópico veracruzano directamente a tu mesa desde hace más de 15 años. Calidad, tradición y sabor en cada fruta.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Facebook">📘</a>
+                    <a href="#" class="social-link" title="Instagram">📸</a>
+                    <a href="#" class="social-link" title="WhatsApp">💬</a>
+                    <a href="#" class="social-link" title="YouTube">▶️</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#inicio">→ Inicio</a></li>
+                    <li><a href="#productos">→ Productos</a></li>
+                    <li><a href="#categorias">→ Categorías</a></li>
+                    <li><a href="#nosotros">→ Nosotros</a></li>
+                    <li><a href="#contacto">→ Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Categorías</h4>
+                <ul>
+                    <li><a href="#categorias">→ Frutas Tropicales</a></li>
+                    <li><a href="#categorias">→ Cítricos</a></li>
+                    <li><a href="#categorias">→ Berries</a></li>
+                    <li><a href="#categorias">→ Plátanos</a></li>
+                    <li><a href="#categorias">→ Importadas</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="#">📍 Xalapa, Veracruz</a></li>
+                    <li><a href="tel:+522281234567">📞 (228) 123-4567</a></li>
+                    <li><a href="mailto:contacto@fruteriaVzla.mx">✉️ contacto@fruteriaVzla.mx</a></li>
+                    <li><a href="#">🕐 Lun-Sáb 7am-8pm</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Frutería Veracruzana. Todos los derechos reservados.</p>
+            <p>Hecho con ❤️ en Veracruz, México</p>
+        </div>
+    </footer>
+
+    <!-- ===========================
+         MODAL DE LOGIN
+    =========================== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-logo">
+                <div class="logo-icon">🔐</div>
+                <h2>Panel de Administrador</h2>
+                <p>Ingresa tus credenciales para continuar</p>
+            </div>
+            <div class="alert" id="loginAlert"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="admin" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:0.5rem;">
+                    🔑 Iniciar Sesión
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

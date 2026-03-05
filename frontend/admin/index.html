@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin – Frutería Veracruzana</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+</head>
+<body>
+
+    <!-- ===========================
+         LOGIN PAGE
+    =========================== -->
+    <div class="admin-login-page" id="loginPage">
+        <div class="login-card">
+            <div class="login-logo">🔐</div>
+            <h1>Panel de Administrador</h1>
+            <p class="subtitle">Frutería Veracruzana</p>
+
+            <div class="alert" id="loginAlert"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="admin" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-login">🔑 Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===========================
+         ADMIN DASHBOARD
+    =========================== -->
+    <div class="admin-layout" id="adminLayout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">🍊</div>
+                    <div class="sidebar-logo-text">
+                        <h2>Frutería Vzla.</h2>
+                        <span>Panel de Administración</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-title">Principal</div>
+                <a href="#" class="active" data-section="dashboard">
+                    <span class="nav-icon">📊</span> Dashboard
+                </a>
+                <a href="#" data-section="products">
+                    <span class="nav-icon">🍉</span> Productos
+                </a>
+                <a href="#" data-section="categories">
+                    <span class="nav-icon">🗂️</span> Categorías
+                </a>
+
+                <div class="sidebar-section-title">Configuración</div>
+                <a href="/" target="_blank">
+                    <span class="nav-icon">🌐</span> Ver Sitio Web
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <h4 id="sidebarUsername">Administrador</h4>
+                        <span>Sesión activa</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOPBAR -->
+            <div class="admin-topbar">
+                <div class="topbar-title">
+                    <h1 id="topbarTitle">Dashboard</h1>
+                    <p id="topbarSubtitle">Resumen general del sistema</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn-logout" id="logoutBtn">🚪 Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="admin-content">
+
+                <!-- DASHBOARD SECTION -->
+                <div id="section-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">🍉</div>
+                            <div class="stat-info">
+                                <h3 id="statProducts">0</h3>
+                                <p>Productos Activos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon brown">🗂️</div>
+                            <div class="stat-info">
+                                <h3>6</h3>
+                                <p>Categorías</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">✅</div>
+                            <div class="stat-info">
+                                <h3>100%</h3>
+                                <p>Disponibilidad</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue">🌐</div>
+                            <div class="stat-info">
+                                <h3>Online</h3>
+                                <p>Estado del Servidor</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <h2>📋 Productos Recientes</h2>
+                            <button class="btn-add" onclick="showSection('products')">Ver Todos</button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="dashboardProductsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Producto</th>
+                                        <th>Categoría</th>
+                                        <th>Precio/kg</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardProductsBody">
+                                    <tr><td colspan="4" style="text-align:center; padding:2rem; color:var(--text-light);">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTS SECTION -->
+                <div id="section-products" style="display:none;">
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <h2>🍉 Gestión de Productos</h2>
+                            <button class="btn-add" id="btnAddProduct">+ Agregar Producto</button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Categoría</th>
+                                        <th>Precio/kg</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody">
+                                    <tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-light);">Cargando productos...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORIES SECTION -->
+                <div id="section-categories" style="display:none;">
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <h2>🗂️ Categorías de Productos</h2>
+                        </div>
+                        <div style="padding: 2rem;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+                                <div class="stat-card">
+                                    <div class="stat-icon orange">🥭</div>
+                                    <div class="stat-info"><h3>Tropicales</h3><p>Mango, papaya, guayaba</p></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon orange">🍊</div>
+                                    <div class="stat-info"><h3>Cítricos</h3><p>Naranja, limón, mandarina</p></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon green">🍓</div>
+                                    <div class="stat-info"><h3>Berries</h3><p>Fresa, mora, frambuesa</p></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon blue">🍇</div>
+                                    <div class="stat-info"><h3>Uvas y Melones</h3><p>Uva, sandía, melón</p></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon brown">🍌</div>
+                                    <div class="stat-info"><h3>Plátanos</h3><p>Tabasco, dominico</p></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon blue">🍎</div>
+                                    <div class="stat-info"><h3>Importadas</h3><p>Manzana, pera, durazno</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ===========================
+         MODAL: AGREGAR/EDITAR PRODUCTO
+    =========================== -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Agregar Producto</h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="productName" placeholder="Ej: Mango Ataulfo" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="productDesc" placeholder="Descripción del producto..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Precio por kg ($MXN)</label>
+                    <input type="number" id="productPrice" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>URL de Imagen</label>
+                    <input type="text" id="productImage" placeholder="images/mango.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="productCategory">
+                        <option value="Frutas Tropicales">Frutas Tropicales</option>
+                        <option value="Cítricos">Cítricos</option>
+                        <option value="Berries">Berries</option>
+                        <option value="Uvas y Melones">Uvas y Melones</option>
+                        <option value="Plátanos">Plátanos</option>
+                        <option value="Frutas Importadas">Frutas Importadas</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
+                    <button type="submit" class="btn-save">💾 Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
